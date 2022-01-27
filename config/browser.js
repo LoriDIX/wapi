@@ -1,5 +1,5 @@
 'use strict'
-var confApi = require('./api'); /* configurações da api */
+var confApi = require('./api.js.save'); /* configurações da api */
 var browser = [];
 var configs = {};
 const dotenv = require('dotenv');
@@ -107,10 +107,10 @@ configs = {
     createPathFileToken:true,
     waitForLogin:true,
     tokenStore: 'file',
-    puppeteerOptions: {
+   /* puppeteerOptions: {
         userDataDir: confEnv.USE_MULTIDEVICE_CACHE == 'true' ? `tokens/${session}` : '' 
-    },
-    whatsappVersion: '',
+    }, */
+    whatsappVersion: '2.2142.12',
   }
 
 exports.configs = configs;

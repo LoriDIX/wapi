@@ -14,7 +14,7 @@ var configs = {
   "send_post_php":{
       "active":true,
       "post_url":{
-        "link":"http://localhost/client_api/webhookNewMsg.php",        "autenticar":false,
+        "link":"http://localhost/wapi-jms-2020/client_api/receive_post.php",        "autenticar":false,
         "user":"",
         "passwd":""
       },

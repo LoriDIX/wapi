@@ -14,7 +14,7 @@ var configs = {
   },
   /* ==== configurar envio de post a um link ==== */
   "send_post_php":{
-      "active":false,
+      "active":true,
       "post_url":{
         "link": "https://hub.dixhealth.com.br:5002/backend/v1/cospeRequest",
         "autenticar":false,
