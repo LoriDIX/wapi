@@ -1,0 +1,5 @@
+projetos 2020 para aplicar a soluções da api wapi:
+
+27/04/2020:
+exemplo mais simples com mesmo ideia sulla:
+link projeto: https://github.com/pedroslopez/whatsapp-web.js

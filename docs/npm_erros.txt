@@ -1,0 +1,5 @@
+
+
+erro: Integridy
+
+comando correção: npm cache clear --force && npm install --no-shrinkwrap --update-binary

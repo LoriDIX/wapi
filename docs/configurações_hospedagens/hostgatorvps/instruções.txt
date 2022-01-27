@@ -1,0 +1,12 @@
+para acessar nodejs pela vps hostgator precisa configura o apache no painel whcm
+
+
+para redicionar as entradas da porta 80 para porta 3000
+
+link do tutorial : https://youtu.be/qP2QHfWr35U
+
+configurações do apache:
+
+ProxyPass / http://localhost:3000/
+ProxyPassReverse / http://localhost:3000/
+ProxyPreserveHost On

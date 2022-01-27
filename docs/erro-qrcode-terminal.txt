@@ -1,0 +1,4 @@
+Ao iniciar api o qrcode terminal apresenta caracteres estranhos ao inves de exibir o qrcode no terminal:
+
+[19:52, 24/03/2021] Edgard (Grupo Api Whatsapp): Faz um teste assim antes de iniciar a aplicação
+[19:52, 24/03/2021] Edgard (Grupo Api Whatsapp): export LANG=en_US.utf8

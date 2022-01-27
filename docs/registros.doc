@@ -1,0 +1,52 @@
+-----> comandos git
+
+https://rogerdudler.github.io/git-guide/index.pt_BR.html
+
+
+    --- PONTO DE PARADA DIA 17-07-2019 ---
+
+    - até dia 17-07-2019 - realizado desenvolvimento de api em funcionamento no windows.
+    - publicado na umbler usuario: jaderesp
+    - ocorrido erro na hospedagem linux
+    - realizado instalação docker (para simular instalação, no linux e corrigir o problema);
+        - docker esta instalando o container, mas os arquivos do projeto não estão sendo atualizados.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%% LINUX EXTREMAMENTE IMPORTANTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+&&&&&&&&&&&&&&&&&&&& UBUNTU &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+REQUISITOS LINUX:
+
+RODAR SEGUINTES COMANDO JÁ CONFIGURADOS NO DOCKERFILE:
+
+RUN apt-get update -y -q
+RUN apt-get install -y -q xvfb libgtk2.0-0 libxtst6 libxss1 libgconf-2-4 libnss3 libasound2
+
+RUN apt-get update && \
+apt-get install -yq gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 \
+libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 \
+libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 \
+libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 \
+ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
+
+
+-------------------- COMANDO INSTALÇÕES PARA LINUX------------------
+
+
+&&&&&&&&&&&&&&&&&&&& CENTOS &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+
+repositorios necessários para rodar o chome no puppeteer:
+
+yum install apt -y -q xvfb libgtk2.0-0 libxtst6 libxss1 libgconf-2-4 libnss3 libasound2
+
+yum install -yq gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
+
+
+precisa instalar o chrome:
+
+yum install https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+
+
+----------------------------------------------------------------------

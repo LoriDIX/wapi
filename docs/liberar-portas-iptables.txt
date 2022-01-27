@@ -1,0 +1,16 @@
+Liberar porta servidor linux centos
+
+    Acesse o ssh e digite o seguinte comando:
+
+
+    1º) Digite o seguinte comando: 
+    iptables -I INPUT -p tcp --dport 3000 -j ACCEPT 
+    A onde esta 587 você deve alterar pela porta que deseja liberar. 
+
+
+    2º) Após isso digite o comando: 
+    iptables -nL |grep 3000 
+    Se tudo estiver ok deve aparecer o seguinte 
+    ACCEPT tcp -- 0.0.0.0/0 0.0.0.0/0 tcp dpt:3000 
+
+    Lembrando que neste exemplo a porta 587 é a que estamos liberando  

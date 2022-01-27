@@ -1,0 +1,142 @@
+DIA 25-11-2019 - PROBLEMA COM A EXECUÇÃO DE FUNÇÕES DA BIBLIOTECA WAPI, ao executar as funções o sistema emitir erro 
+acusando funções inexistentes.
+
+DETECTADO QUE,  a string que carrega o conteudo do arquivo wapi.js não está comportando todo o conteudo do arquivos, executando o conteudo incompleto
+de forma quebrada, e ao sistem executar funções emite erros.
+
+SOLUÇÃO: quebrar o arquivos em varias arquivos, ou pesquisar uma forma de carregar todo conteudo do arquivo para ser executado na pagina do whatsapp web.
+
+/* 25-05-2020  - tornar geração de qrcode eterna */
+arquivo:  C:\xampp\htdocs\sulla20\node_modules\sulla\dist\controllers\auth.js
+
+
+/* comunicação com a page para obter o qrcode (precisa obter qrcode continuo) */
+function decodeQR(page) {
+
+
+  
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, page.waitForSelector('canvas', { timeout: 0 })];
+                case 1:
+                    _a.sent();
+                    return [4 /*yield*/, page.addScriptTag({
+                            path: require.resolve(path.join(__dirname, '../lib/jsQR', 'jsQR.js')),
+                        })];
+                case 2:
+                    _a.sent();  
+                                    
+                  console.log("Status da página: " + page.isClosed());
+                
+                    return [4 /*yield*/, page.evaluate(function () {
+                           
+                            /* UPDATE - 25/05/2020: verificar se parou gerar qrcode, e se sim, clicar sobre opção para continuar gerarando novos qrcodes */
+                            if (document.querySelector('._28pQU') !== null){
+                                setTimeout(function(){
+                                    document.querySelector('._28pQU').click();
+                                },1500); /* aguardar 1.5 segundos */                                
+                            }
+                            
+
+                            var canvas = document.querySelector('canvas');
+                            var context = canvas.getContext('2d');
+                            // @ts-ignore
+                            var code = jsQR(context.getImageData(0, 0, canvas.width, canvas.height).data, canvas.width, canvas.height);
+                            return { code: code.data, data: canvas.toDataURL() };
+                        })];
+                case 3: return [2 /*return*/, _a.sent()];
+            }
+        });
+    });
+}
+
+
+
+/* algterações imcompletas destruir sessao page (andamento) e contagem de qrcodes gerados */
+
+arquivo: C:\xampp\htdocs\sulla20\node_modules\sulla\dist\controllers\initializer.js
+
+/* exportar função para destruir a sessão, mesmo que ainda não sincronizada */
+function destroy(instancia){
+
+    /* verificar se está autenticado */
+    var auth = instancia_req;
+
+    console.log("Destruir intancia: " + instancia + " flag autenticação: " + auth);
+
+    
+}
+
+exports.create = create;
+exports.destroy = destroy;
+
+function grabQRUntilInside(waPage, options, session, catchQR) {
+    var isInside = auth_1.isInsideChat(waPage);
+    var cont = 0;
+    rxjs_1.timer(0, options.refreshQR)
+        .pipe(operators_1.takeUntil(isInside), operators_1.switchMap(function () { return auth_1.retrieveQR(waPage); }))
+        .subscribe(function (_a) {
+        var data = _a.data, asciiQR = _a.asciiQR;
+        if (catchQR) {
+            catchQR(data, asciiQR);
+        }
+        if (options.logQR) {
+            cont = cont + 1;
+            console.clear();
+           
+            console.log("Scan QR for: " + session + "                Nº qrcode.: " + cont );
+            console.log(asciiQR);
+           // console.log(auth_1.isAuthenticated(waPage));
+            if(cont == 2){
+                /* se não tiver sincronizado fechar a aba */
+               // waPage = null;
+              
+             //  var br = browser_1;
+
+             // console.log(Spinnies);
+               
+
+            }
+        }
+    });
+
+}
+/**
+ * Checs for a new versoin of sulla and logs
+ */
+function checkSullaVersion(spinnies) {
+    latest_version_1.default('sulla').then(function (latest) {
+        if (!semver_1.upToDate(version, latest)) {
+            logUpdateAvailable(version, latest);
+        }
+        spinnies.succeed('sulla-version-spinner', { text: 'Checking for updates' });
+    });
+}
+/**
+ * Logs a boxen of instructions to update
+ * @param current
+ * @param latest
+ */
+function logUpdateAvailable(current, latest) {
+    // prettier-ignore
+    var newVersionLog = "There is a new version of " + chalk.bold("sulla") + " " + chalk.gray(current) + " \u279C  " + chalk.bold.green(latest) + "\n" +
+        "Update your package by running:\n\n" +
+        (chalk.bold('\>') + " " + chalk.blueBright('npm update sulla'));
+    console.log(boxen(newVersionLog, { padding: 1 }));
+    console.log("For more info visit: " + chalk.underline('https://github.com/danielcardeenas/sulla/blob/master/UPDATES.md') + "\n");
+}
+
+
+
+
+/* ================= 10/06/2020 - reconectar sessao ==================== */
+
+arquivo: sulla/dist/api/whatsapp.js
+linha 85
+
+atualizar classe css do botão USAR AQUI:
+
+ var useHereClass = '.S7_rT.FV2Qy';
+ document.querySelector(useHereClass).click();

@@ -1,0 +1,94 @@
+
+/* FERRAMENTA UTILIZADA PARA AUTOMATIZAR A INICIALIZAÇÃO DA API NO LINUX DE FORMA QUE INICIE COM O SISTEMA AUTOMATICAMENTE E ABRA A API COMO SUBPROCESSO */
+
+link documentação: https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-18-04-pt
+
+
+-------------------- passo a passo --------------------------
+
+Instalando o PM2
+
+Em seguida, vamos instalar o PM2, um gerenciador de processos para aplicativos Node.js. O PM2 torna possível forçar os aplicativos a executarem como daemon para que eles executem em segundo plano como um serviço.
+
+Utilize o npm para instalar a última versão do PM2 no seu servidor:
+
+    sudo npm install pm2@latest -g
+
+A opção -g faz com que o npm instale o módulo globally, para que ele esteja disponível em todo o sistema.
+
+Vamos usar primeiro o comando pm2 start para executar seu aplicativo, hello.js, em segundo plano:
+
+    pm2 start hello.js
+
+Isso também adiciona seu aplicativo na lista de processos do PM2, que é produzida toda vez que você inicia um aplicativo:
+
+Output
+[PM2] Spawning PM2 daemon with pm2_home=/home/sammy/.pm2
+[PM2] PM2 Successfully daemonized
+[PM2] Starting /home/sammy/hello.js in fork_mode (1 instance)
+[PM2] Done.
+┌──────────┬────┬──────┬──────┬────────┬─────────┬────────┬─────┬───────────┬───────┬──────────┐
+│ App name │ id │ mode │ pid  │ status │ restart │ uptime │ cpu │ mem       │ user  │ watching │
+├──────────┼────┼──────┼──────┼────────┼─────────┼────────┼─────┼───────────┼───────┼──────────┤
+│ hello    │ 0  │ fork │ 1338 │ online │ 0       │ 0s     │ 0%  │ 23.0 MB   │ sammy │ disabled │
+└──────────┴────┴──────┴──────┴────────┴─────────┴────────┴─────┴───────────┴───────┴──────────┘
+ Use `pm2 show <id|name>` to get more details about an app
+
+Como pode ver, o PM2 atribui automaticamente um App name (com base no nome do arquivo, sem a extensão .js) e um id PM2. O PM2 também mantém outras informações, como o PID do processo, seu status atual e o uso de memória.
+
+Os aplicativos que estão funcionando sob o PM2 serão reiniciados automaticamente se o aplicativo falhar ou for encerrado, mas podemos ir um passo além para fazer o aplicativo iniciar na inicialização do sistema usando o subcomando startup. Este subcomando gera e configura um script de inicialização para iniciar o PM2 e seus processos gerenciados nas inicializações do servidor:
+
+    pm2 startup systemd
+
+A última linha da saída resultante incluirá um comando para ser executado com privilégios de superusuário para definir o PM2 para iniciar na inicialização:
+
+Output
+[PM2] Init System found: systemd
+[PM2] To setup the Startup Script, copy/paste the following command:
+sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u sammy --hp /home/sammy
+
+Execute o comando a partir do resultado, com seu nome de usuário no lugar de sammy:
+
+    sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u sammy --hp /home/sammy
+
+Como um passo adicional, podemos salvar a lista de processos PM2 e os ambientes correspondentes:
+
+    pm2 save
+
+Agora, você criou uma unidade systemd que executa o pm2 para seu usuário na inicialização. Esta instância pm2, por sua vez, executa o hello.js.
+
+Inicie o serviço com systemctl:
+
+    sudo systemctl start pm2-sammy
+
+Verifique o status da unidade systemd:
+
+    systemctl status pm2-sammy
+
+Para um panorama detalhado do systemd, veja Fundamentos do Systemd: trabalhando com serviços, unidades e o diário.
+
+Além daqueles que abordamos, o PM2 fornece muitos subcomandos que permitem que você gerencie ou procure informações sobre seus aplicativos.
+
+Interrompa um aplicativo com este comando (especifique o App name do PM2 ou id):
+
+    pm2 stop app_name_or_id
+
+Reinicie um aplicativo:
+
+    pm2 restart app_name_or_id
+
+Liste os aplicativos atualmente gerenciados pelo PM2:
+
+    pm2 list
+
+Obtenha informações sobre um aplicativo específico usando seu App name:
+
+    pm2 info app_name
+
+O monitor de processos do PM2 pode ser trazido com o subcomando monit. Isso mostra o status do aplicativo, da CPU, e o uso de memória:
+
+    pm2 monit
+
+Note que executar o pm2 sem qualquer argumento também exibirá uma página de ajuda com exemplos de uso.
+
+Agora que seu aplicativo Node.js está funcionando e é gerenciado pelo PM2, vamos configurar o proxy reverso.
